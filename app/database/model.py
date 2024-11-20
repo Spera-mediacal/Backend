@@ -32,3 +32,11 @@ class Doctors(SQLModel, table=True):
     end: str
     rate: float
     image: str
+    
+class Stations(SQLModel, table=True):
+    __tablename__ = "stations"
+    id: int = Field(default=None, primary_key=True)
+    name: str
+    manager: str
+    phone: str
+    location: str
