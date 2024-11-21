@@ -2,7 +2,6 @@ from sqlmodel import select, Session
 from fastapi import Depends, HTTPException
 from app.database.model import Doctors
 from app.model.doctor import Doctor
-from app.model.donate import Donate
 from app.core import app, get_session
 
 @app.get('/api/doctor', tags=["Doctors"])
@@ -19,7 +18,7 @@ def create_doctor(doctor: Doctor, session: Session = Depends(get_session)):
     if result:
         raise HTTPException(status_code=406, detail='This doctor already exists')
     
-    new_doctor = Doctors(id=doctor.id, name=doctor.name, specialization=doctor.specialization, workDays=doctor.workDays, phone=doctor.phone, start=doctor.start, end=doctor.end, rate=doctor.rate, image=doctor.image)
+    new_doctor = Doctors(id=doctor.id, name=doctor.name, specialization=doctor.specialization, workDays=doctor.workDays, address=doctor.address, joinDate=doctor.joinDate, phone=doctor.phone, start=doctor.start, end=doctor.end, rate=doctor.rate, image=doctor.image)
     session.add(new_doctor)
     session.commit()
     return {'message': 'Doctor created successfully', 'doctor': new_doctor}

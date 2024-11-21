@@ -31,6 +31,8 @@ class Doctors(SQLModel, table=True):
     start: str
     end: str
     rate: float
+    address: str
+    joinDate: str
     image: str
     
 class Stations(SQLModel, table=True):

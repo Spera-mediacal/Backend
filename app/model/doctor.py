@@ -1,4 +1,7 @@
 from pydantic import BaseModel
+from datetime import datetime
+
+fullDate = f"{datetime.now().day}-{datetime.now().month}-{datetime.now().year}"
 
 class Doctor(BaseModel):
     id: str
@@ -9,4 +12,6 @@ class Doctor(BaseModel):
     start: str
     end: str
     rate: float
+    address: str
+    joinDate: str = fullDate
     image: str
