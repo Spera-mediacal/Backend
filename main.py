@@ -78,11 +78,12 @@ def update_user_by_id(user: User, session: Session = Depends(get_session)):
 
 @app.post("/api/user", tags=["Blood Donations"])
 def create_user(user: User, session: Session = Depends(get_session)):
-    new_user = UserTB(id=user.id, name=user.name, phone=user.phone, bloodType=user.bloodType, weight=user.weight, hight=user.hight, age=user.age, lastdonate="")
-    
-    if new_user:
+    statement = select(UserTB).where(UserTB.id == user.id)
+    result = session.exec(statement).first()
+    if result:
         raise HTTPException(status_code=406, detail="This user already exists")
     
+    new_user = UserTB(id=user.id, name=user.name, phone=user.phone, bloodType=user.bloodType, weight=user.weight, hight=user.hight, age=user.age, lastdonate="")
     session.add(new_user)
     session.commit()
     return {'message': 'User created successfully', 'user': new_user}
@@ -120,10 +121,16 @@ def delete_user_by_id(id: str, session: Session = Depends(get_session)):
 def get_all_doctors(session: Session = Depends(get_session)):
     statement = select(Doctors)
     doctors = session.exec(statement).all()
-    return doctors
+    return {'message': doctors}
 
 @app.post('/api/doctor', tags=["Doctors"])
 def create_doctor(doctor: Doctor, session: Session = Depends(get_session)):
+    statement = select(Doctors).where(Doctors.id == doctor.id)
+    result = session.exec(statement).first()
+    
+    if result:
+        raise HTTPException(status_code=406, detail='This doctor already exists')
+    
     new_doctor = Doctors(id=doctor.id, name=doctor.name, specialization=doctor.specialization, workDays=doctor.workDays, phone=doctor.phone, start=doctor.start, end=doctor.end, rate=doctor.rate, image=doctor.image)
     session.add(new_doctor)
     session.commit()
