@@ -18,8 +18,8 @@ class DonationHistory(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     quantity: int
     date: str
-    user_id: str = Field(foreign_key="users.id")
-    user: UserTB | None = Relationship()
+    user_id: str = Field(foreign_key="users.id", nullable=False)
+    user: UserTB | None = Relationship(sa_relationship_kwargs={"cascade": "all, delete"})
 
 class Doctors(SQLModel, table=True):
     __tablename__ = "doctors"

@@ -1,9 +1,15 @@
 from app.database.model import UserTB, DonationHistory
-from sqlmodel import select, Session
+from sqlmodel import select, Session, delete
 from fastapi import Depends, HTTPException
 from app.model.donate import Donate
 from app.core import app, get_session
 from app.model.user import User
+
+@app.get("/api/user", tags=['Blood Donations'])
+def get_all_users_info(session: Session = Depends(get_session)):
+    statement = select(UserTB)
+    result = session.exec(statement).all()
+    return {'message': result}
 
 @app.get("/api/user/{user_id}", tags=["Blood Donations"])
 def get_user_info(user_id: str, session: Session = Depends(get_session)):
@@ -64,7 +70,6 @@ def create_user(user: User, session: Session = Depends(get_session)):
     result = session.exec(statement).first()
     if result:
         raise HTTPException(status_code=406, detail="This user already exists")
-    
     new_user = UserTB(id=user.id, name=user.name, phone=user.phone, bloodType=user.bloodType, weight=user.weight, hight=user.hight, age=user.age, lastdonate="")
     session.add(new_user)
     session.commit()
@@ -93,6 +98,8 @@ def delete_user_by_id(id: str, session: Session = Depends(get_session)):
     user = session.exec(statement).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    
+    session.exec(delete(DonationHistory).where(DonationHistory.user_id == id))
     
     session.delete(user)
     session.commit()

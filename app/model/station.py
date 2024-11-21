@@ -5,3 +5,10 @@ class Station(BaseModel):
     manager: str
     phone: str
     location: str
+    
+class StationU(BaseModel):
+    id: int
+    name: str
+    manager: str
+    phone: str
+    location: str

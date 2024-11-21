@@ -35,10 +35,14 @@ def update_doctor_by_id(doctor: Doctor, session: Session = Depends(get_session))
         existing_doctor.name = doctor.name
     if doctor.specialization:
         existing_doctor.specialization = doctor.specialization
-    if doctor.workDays is not None:
+    if doctor.workDays[0]:
         existing_doctor.workDays = doctor.workDays
     if doctor.phone:
         existing_doctor.phone = doctor.phone
+    if doctor.address:
+        existing_doctor.address = doctor.address
+    if doctor.joinDate:
+        existing_doctor.joinDate = doctor.joinDate
     if doctor.start:
         existing_doctor.start = doctor.start
     if doctor.end:
