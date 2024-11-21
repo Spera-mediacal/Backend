@@ -134,7 +134,7 @@ def create_doctor(doctor: Doctor, session: Session = Depends(get_session)):
     new_doctor = Doctors(id=doctor.id, name=doctor.name, specialization=doctor.specialization, workDays=doctor.workDays, phone=doctor.phone, start=doctor.start, end=doctor.end, rate=doctor.rate, image=doctor.image)
     session.add(new_doctor)
     session.commit()
-    return {'message': 'Done'}
+    return {'message': 'Doctor created successfully', 'doctor': new_doctor}
 
 @app.put("/api/doctor", tags=["Doctors"])
 def update_doctor_by_id(doctor: Doctor, session: Session = Depends(get_session)):
@@ -183,10 +183,16 @@ def delete_doctor_by_id(id: str, session: Session = Depends(get_session)):
 def get_all_stations(session: Session = Depends(get_session)):
     statement = select(Stations)
     stations = session.exec(statement).all()
-    return stations
+    return {'message': stations}
 
 @app.post("/api/station", tags=['Stations'])
 def create_new_station(station: Station, session: Session = Depends(get_session)):
+    statement = select(Stations).where(Stations.id == station.id)
+    result = session.exec(statement).first()
+    
+    if result:
+        raise HTTPException(status_code=406, detail='This station already exists')
+    
     new_station = Stations(name=station.name, manager=station.manager, phone=station.phone, location=station.location)
     session.add(new_station)
     session.commit()
