@@ -1,8 +1,11 @@
+from fastapi.security import OAuth2PasswordBearer
 from app.database.model import DonationHistory
+from fastapi import Depends, HTTPException
 from app.core import app, get_session
 from sqlmodel import Session
-from fastapi import Depends, HTTPException
 from sqlalchemy import func
+
+outh2_scheme = OAuth2PasswordBearer("/api/admin/token")
 
 def get_donation_counts(session: Session):
     date_conversion = func.date(func.concat(func.substr(DonationHistory.date, 7, 4), '-', func.substr(DonationHistory.date, 4, 2), '-', func.substr(DonationHistory.date, 1, 2)))
@@ -44,3 +47,4 @@ def get_monthly_donations(session: Session = Depends(get_session)):
 def get_yearly_donations(session: Session = Depends(get_session)):
     yearly_donation = get_donation_counts(session)['yearly']
     return yearly_donation
+
