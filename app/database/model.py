@@ -43,7 +43,7 @@ class Stations(SQLModel, table=True):
     phone: str
     location: str
     
-    admin_id: int | None = Field(default=None, foreign_key=True)
+    admin_id: int | None = Field(default=None, foreign_key="admin.id")
 
 class Admins(SQLModel, table=True):
     __tablename__ = "admin"
@@ -51,5 +51,3 @@ class Admins(SQLModel, table=True):
     name: str
     username: str = Field(unique=True)
     password: str
-    
-    station_id: int | None = Field(default=None, foreign_key="stations.id")
