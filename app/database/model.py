@@ -35,7 +35,14 @@ class Doctors(SQLModel, table=True):
     address: str
     joinDate: str
     image: str
-    
+
+class Admins(SQLModel, table=True):
+    __tablename__ = "admin"
+    id: int = Field(default=None, primary_key=True)
+    name: str
+    username: str = Field(unique=True)
+    password: str
+
 class Stations(SQLModel, table=True):
     __tablename__ = "stations"
     id: int = Field(default=None, primary_key=True)
@@ -44,10 +51,4 @@ class Stations(SQLModel, table=True):
     location: str
     
     admin_id: int | None = Field(default=None, foreign_key="admin.id")
-
-class Admins(SQLModel, table=True):
-    __tablename__ = "admin"
-    id: int = Field(default=None, primary_key=True)
-    name: str
-    username: str = Field(unique=True)
-    password: str
+    admin: Admins | None = Relationship(sa_relationship_kwargs={"cascade": "all, delete"})
