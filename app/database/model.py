@@ -40,16 +40,16 @@ class Stations(SQLModel, table=True):
     __tablename__ = "stations"
     id: int = Field(default=None, primary_key=True)
     name: str
-    admin_id: int = Field(foreign_key="admin.id")
-    admin: Optional["Admins"] = Relationship(back_populates="stations")
     phone: str
     location: str
+    
+    admin_id: int | None = Field(default=None, foreign_key=True)
 
 class Admins(SQLModel, table=True):
     __tablename__ = "admin"
     id: int = Field(default=None, primary_key=True)
     name: str
-    username: str
+    username: str = Field(unique=True)
     password: str
-    station_id: list = Field(foreign_key="stations.id")
-    stations = List[Stations] = Relationship(back_populates="admin")
+    
+    station_id: int | None = Field(default=None, foreign_key="stations.id")
