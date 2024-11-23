@@ -7,4 +7,5 @@ class User(BaseModel):
     bloodType: str
     weight: int
     hight: int
+    bmi: float
     age: int

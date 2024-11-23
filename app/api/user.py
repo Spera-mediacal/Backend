@@ -54,7 +54,7 @@ def create_user(user: User, session: Session = Depends(get_session)):
     result = session.exec(statement).first()
     if result:
         raise HTTPException(status_code=406, detail="This user already exists")
-    new_user = UserTB(id=user.id, name=user.name, phone=user.phone, bloodType=user.bloodType, weight=user.weight, hight=user.hight, age=user.age, lastdonate="")
+    new_user = UserTB(id=user.id, name=user.name, phone=user.phone, bloodType=user.bloodType, weight=user.weight, hight=user.hight, age=user.age, lastdonate="", bmi=user.bmi)
     session.add(new_user)
     session.commit()
     return {'message': 'User created successfully', 'user': new_user}

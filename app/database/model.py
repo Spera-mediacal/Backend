@@ -11,6 +11,7 @@ class UserTB(SQLModel, table=True):
     weight: int
     hight: int
     age: int
+    bmi: float
     lastdonate: str
 
 class DonationHistory(SQLModel, table=True):
