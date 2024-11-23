@@ -120,7 +120,7 @@ async def read_users_me(current_user: Admins = Depends(get_current_active_user))
 
 @app.post('/api/admin', tags=['Admin'])
 async def create_admin(admin: Admin, session: Session = Depends(get_session)):
-    statement = select(Admins).where(Admins.id == admin.id)
+    statement = select(Admins).where(Admins.username == admin.username)
     result = session.exec(statement).first()
     if result:
         raise HTTPException(status_code=406, detail="This admin already exists")
