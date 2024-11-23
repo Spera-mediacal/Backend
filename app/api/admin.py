@@ -100,7 +100,7 @@ def get_donation_counts(session: Session):
     return {"daily": daily}
 
 
-@app.post("/token", response_model=Token)
+@app.post("/token", response_model=Token, tags=["Admin"])
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
     user = authenticate_user(session, form_data.username, form_data.password)
     if not user:
@@ -114,7 +114,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("/api/admin/me/")
+@app.get("/api/admin/me/", tags=["Admin"])
 async def read_users_me(current_user: Admins = Depends(get_current_active_user)):
     return current_user
 
