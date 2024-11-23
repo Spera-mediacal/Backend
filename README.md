@@ -1,4 +1,4 @@
-# Spera Backend System
+# Spera
 
 ## How to run it
 
