@@ -12,8 +12,8 @@ def get_all_stations(session: Session = Depends(get_session)):
     return {'message': stations}
 
 @app.post("/api/station", tags=['Stations'])
-def create_new_station(admin: Admin, station: Station, session: Session = Depends(get_session)):
-    data = session.get(Admins, admin.id)
+def create_new_station(station: Station, session: Session = Depends(get_session)):
+    data = session.get(Admins, station.admin_id)
     new_station = Stations(name=station.name, phone=station.phone, location=station.location, admin=data)
     session.add(new_station)
     session.commit()
