@@ -1,9 +1,9 @@
-from app.model.station import Station, StationU
 from app.database.model import Admins, Stations
+from app.model.station import Station, StationU
 from fastapi import Depends, HTTPException
 from app.core import app, get_session
 from sqlmodel import select, Session
-from app.api import admin
+from app.model.admin import Admin
 
 @app.get("/api/station", tags=['Stations'])
 def get_all_stations(session: Session = Depends(get_session)):
@@ -12,7 +12,7 @@ def get_all_stations(session: Session = Depends(get_session)):
     return {'message': stations}
 
 @app.post("/api/station", tags=['Stations'])
-def create_new_station(station: Station, session: Session = Depends(get_session)):
+def create_new_station(admin: Admin, station: Station, session: Session = Depends(get_session)):
     data = session.get(Admins, admin.id)
     new_station = Stations(name=station.name, phone=station.phone, location=station.location, admin=data)
     session.add(new_station)
