@@ -14,6 +14,9 @@ def get_all_stations(session: Session = Depends(get_session)):
 @app.post("/api/station", tags=['Stations'])
 def create_new_station(station: Station, session: Session = Depends(get_session)):
     data = session.get(Admins, station.admin_id)
+    if not data:
+        raise HTTPException(status_code=406, detail="This admin not exists")
+    
     new_station = Stations(name=station.name, phone=station.phone, location=station.location, admin=data)
     session.add(new_station)
     session.commit()
