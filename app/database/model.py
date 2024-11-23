@@ -50,5 +50,5 @@ class Stations(SQLModel, table=True):
     phone: str
     location: str
     
-    admin_id: int | None = Field(default=None, foreign_key="admin.id")
+    admin_id: int | None = Field(default=None, foreign_key="admin.id", nullable=False)
     admin: Admins | None = Relationship(sa_relationship_kwargs={"cascade": "all, delete"})
