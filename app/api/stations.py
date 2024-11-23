@@ -3,7 +3,6 @@ from app.model.station import Station, StationU
 from fastapi import Depends, HTTPException
 from app.core import app, get_session
 from sqlmodel import select, Session
-from app.model.admin import Admin
 
 @app.get("/api/station", tags=['Stations'])
 def get_all_stations(session: Session = Depends(get_session)):
