@@ -1,5 +1,5 @@
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from app.database.model import DonationHistory
+from app.database.model import DonationHistory, Stations
 from sqlmodel import Session, select, func
 from fastapi import Depends, HTTPException
 from datetime import datetime, timedelta
@@ -122,11 +122,11 @@ async def create_admin(admin: Admin, session: Session = Depends(get_session)):
     result = session.exec(statement).first()
     if result:
         raise HTTPException(status_code=406, detail="This admin already exists")
-
+    
     new_admin = Admins(
         name=admin.name,
         username=admin.username,
-        password=get_password_hash(admin.password)
+        password=get_password_hash(admin.password),
     )
     session.add(new_admin)
     session.commit()

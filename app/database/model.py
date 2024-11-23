@@ -36,6 +36,16 @@ class Doctors(SQLModel, table=True):
     joinDate: str
     image: str
 
+from typing import List, Optional
+
+class Admins(SQLModel, table=True):
+    __tablename__ = "admins"
+    id: int = Field(default=None, primary_key=True)
+    name: str
+    username: str = Field(unique=True)
+    password: str
+
+
 class Stations(SQLModel, table=True):
     __tablename__ = "stations"
     id: int = Field(default=None, primary_key=True)
@@ -43,16 +53,7 @@ class Stations(SQLModel, table=True):
     phone: str
     location: str
     
-    admin_id: int | None = Field(default=None, foreign_key="admin.id", nullable=False)
-    admin: Admins | None = Relationship(back_populates="stations", sa_relationship_kwargs={"cascade": "all, delete"})
-
-class Admins(SQLModel, table=True):
-    __tablename__ = "admin"
-    id: int = Field(default=None, primary_key=True)
-    name: str
-    username: str = Field(unique=True)
-    password: str
-    stations: list[Stations] = Relationship(back_populates="admin")
-
-
-
+    admin_id: Optional[int] = Field(default=None, foreign_key="admins.id", nullable=False)
+    
+    # Relationship with Admins model
+    admin: Optional["Admins"] = Relationship(sa_relationship_kwargs={"cascade": "all, delete"})
