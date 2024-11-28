@@ -23,7 +23,7 @@ class TokenData(BaseModel):
     username: str | None = None
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer("token")
+oauth2_scheme = OAuth2PasswordBearer("/api/admin/login")
 
 
 def verify_password(plain_password, hashed_password):
@@ -98,7 +98,7 @@ def get_donation_counts(session: Session):
     return {"daily": daily}
 
 
-@app.post("/token", response_model=Token, tags=["Admin"])
+@app.post("/api/admin/login", response_model=Token, tags=["Admins"])
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = Depends(get_session)):
     user = authenticate_user(session, form_data.username, form_data.password)
     if not user:
@@ -112,11 +112,11 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         data={"sub": user.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("/api/admin/me/", tags=["Admin"])
+@app.get("/api/admin/me/", tags=["Admins"])
 async def read_users_me(current_user: Admins = Depends(get_current_active_user)):
     return current_user
 
-@app.post('/api/admin', tags=['Admin'])
+@app.post('/api/admin', tags=['Admins'])
 async def create_admin(admin: Admin, session: Session = Depends(get_session)):
     statement = select(Admins).where(Admins.username == admin.username)
     result = session.exec(statement).first()

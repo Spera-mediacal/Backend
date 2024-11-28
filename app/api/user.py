@@ -5,13 +5,13 @@ from sqlmodel import Session, select
 from app.model.user import User
 from sqlalchemy import delete
 
-@app.get("/api/user", tags=['User'])
+@app.get("/api/user", tags=['Users'])
 def get_all_users_info(session: Session = Depends(get_session)):
     statement = select(UserTB)
     result = session.exec(statement).all()
     return {'message': result}
 
-@app.get("/api/user/{user_id}", tags=["User"])
+@app.get("/api/user/{user_id}", tags=["Users"])
 def get_user_info_by_id(user_id: str, session: Session = Depends(get_session)):
     statemnet = select(UserTB).where(UserTB.id == user_id)
     user = session.exec(statemnet).first()
@@ -21,7 +21,7 @@ def get_user_info_by_id(user_id: str, session: Session = Depends(get_session)):
     
     return {'message': 'User is exist', 'user': user}
 
-@app.put("/api/user", tags=["User"])
+@app.put("/api/user", tags=["Users"])
 def update_user_by_id(user: User, session: Session = Depends(get_session)):
     statement = select(UserTB).where(UserTB.id == user.id)
     existing_user = session.exec(statement).first()
@@ -48,7 +48,7 @@ def update_user_by_id(user: User, session: Session = Depends(get_session)):
     
     return {"message": "User updated successfully", "user": existing_user}
 
-@app.post("/api/user", tags=["User"])
+@app.post("/api/user", tags=["Users"])
 def create_user(user: User, session: Session = Depends(get_session)):
     statement = select(UserTB).where(UserTB.id == user.id)
     result = session.exec(statement).first()
@@ -59,7 +59,7 @@ def create_user(user: User, session: Session = Depends(get_session)):
     session.commit()
     return {'message': 'User created successfully', 'user': new_user}
 
-@app.delete('/api/user/{id}', tags=['User'])
+@app.delete('/api/user/{id}', tags=['Users'])
 def delete_user_by_id(id: str, session: Session = Depends(get_session)):
     statement = select(UserTB).where(UserTB.id == id)
     user = session.exec(statement).first()
