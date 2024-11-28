@@ -17,7 +17,7 @@ def get_user_donation_history(id: str, session: Session = Depends(get_session)):
     donates = session.exec(statement).all()
     
     if not donates:
-        raise HTTPException(status_code=404, detail="This user doesn't donate yet")
+        raise HTTPException(status_code=404, detail="0")
     
     return {'message': 'found', 'donate_history': donates}
 
