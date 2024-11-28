@@ -11,7 +11,7 @@ def get_user_donation_history(id: str, session: Session = Depends(get_session)):
     result = session.exec(user).first()
     
     if not result:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=406, detail="User not found")
     
     statement = select(DonationHistory).where(DonationHistory.user_id == id)
     donates = session.exec(statement).all()
