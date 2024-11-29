@@ -4,7 +4,7 @@ from app.chatbot.main import rag_chain
 from app.core import app
 
 
-@app.post("/get", tags=["Chat"])
+@app.post("/api/chat", tags=["Chat"])
 async def chat(request: RequestModel):
     input = request.msg
     print(input)
