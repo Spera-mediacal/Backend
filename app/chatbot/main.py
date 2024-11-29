@@ -53,18 +53,5 @@ prompt = ChatPromptTemplate.from_messages(
 question_answer_chain = create_stuff_documents_chain(llm, prompt)
 rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
-# Define the request model
-class RequestModel(BaseModel):
-    msg: str
 
-# API Routes
-@app.post("/get")
-async def chat(request: RequestModel):
-    input = request.msg
-    print(input)
-    response = rag_chain.invoke({"input": input})
-    print("Response : ", response["answer"])
-    return JSONResponse(content={"answer": response["answer"]})
 
-# Run the application using Uvicorn
-# Command: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
