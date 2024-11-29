@@ -1,0 +1,8 @@
+0 Squamous cell carcinoma(Chest)
+1 Adenocarcinoma(Chest)
+2 Large cell carcinoma (Chest)
+3 Normal in Chest
+4 pituitary_tumor(Brain)
+5 Normal(Brain)
+6 Meningioma_tumor(Brain)
+7 Glioma_Tumor(Brain)
