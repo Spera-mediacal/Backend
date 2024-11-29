@@ -5,8 +5,8 @@ import base64
 import numpy as np
 from PIL import Image, ImageOps
 
-model = tf.keras.models.load_model("keras_model.h5")
-class_names = open("labels.txt", "r").readlines()
+model = tf.keras.models.load_model(r"app\xray\testFlask\keras_model.h5")
+class_names = open(r"app\xray\testFlask\app.py", "r").readlines()
 
 app = FastAPI()
 
