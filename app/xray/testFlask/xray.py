@@ -1,6 +1,5 @@
 from PIL import Image, ImageOps
 from pydantic import BaseModel
-from fastapi import FastAPI
 from app.core import app
 import tensorflow as tf
 import numpy as np
