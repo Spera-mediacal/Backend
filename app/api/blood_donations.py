@@ -5,6 +5,12 @@ from app.model.donate import Donate
 from app.core import app, get_session
 from app.model.user import User
 
+@app.get("/api/user/donate", tags=["Donations"])
+def get_all_donations(session: Session = Depends()):
+    statement = select(DonationHistory)
+    donates = session.exec(statement).all()
+    return {'message': donates}
+
 @app.get("/api/user/donate/{user_id}", tags=["Donations"])
 def get_user_donation_history(id: str, session: Session = Depends(get_session)):
     user = select(UserTB).where(UserTB.id == id)
