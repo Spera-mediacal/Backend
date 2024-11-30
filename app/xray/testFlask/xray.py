@@ -17,7 +17,7 @@ class_names = open(r"app\xray\testFlask\labels.txt", "r").readlines()
 
 
 
-@app.post("/api/")
+@app.post("/api/xray", tags=['xray'])
 async def index(file: UploadFile = File(...)):
     # Read the uploaded file
     imgdata = await file.read()
