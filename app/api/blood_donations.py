@@ -6,7 +6,7 @@ from app.core import app, get_session
 from app.model.user import User
 
 @app.get("/api/user/donate", tags=["Donations"])
-def get_all_donations(session: Session = Depends()):
+def get_all_donations(session: Session = Depends(get_session)):
     statement = select(DonationHistory)
     donates = session.exec(statement).all()
     return donates
