@@ -9,7 +9,7 @@ from app.model.user import User
 def get_all_donations(session: Session = Depends()):
     statement = select(DonationHistory)
     donates = session.exec(statement).all()
-    return {'message': donates}
+    return donates
 
 @app.get("/api/user/donate/{user_id}", tags=["Donations"])
 def get_user_donation_history(id: str, session: Session = Depends(get_session)):
