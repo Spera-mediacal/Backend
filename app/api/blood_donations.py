@@ -5,13 +5,13 @@ from app.model.donate import Donate
 from app.core import app, get_session
 from app.model.user import User
 
-@app.get("/api/user/donate", tags=["Donations"])
+@app.get("/api/donate", tags=["Donations"])
 def get_all_donations(session: Session = Depends(get_session)):
     statement = select(DonationHistory)
     donates = session.exec(statement).all()
     return donates
 
-@app.get("/api/user/donate/{user_id}", tags=["Donations"])
+@app.get("/api/donate/{user_id}", tags=["Donations"])
 def get_user_donation_history(id: str, session: Session = Depends(get_session)):
     user = select(UserTB).where(UserTB.id == id)
     result = session.exec(user).first()
@@ -27,7 +27,7 @@ def get_user_donation_history(id: str, session: Session = Depends(get_session)):
     
     return {'message': 'found', 'donate_history': donates}
 
-@app.post("/api/user/donate", tags=["Donations"])
+@app.post("/api/donate", tags=["Donations"])
 def user_new_donate(donate: Donate, session: Session = Depends(get_session)):
     statement = select(UserTB).where(UserTB.id == donate.id)
     user = session.exec(statement).first()
