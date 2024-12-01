@@ -7,7 +7,7 @@ from app.model.user import User
 
 @app.get("/api/donate", tags=["Donations"])
 def get_all_donations(session: Session = Depends(get_session)):
-    statement = select(DonationHistory)
+    statement = select(DonationHistory).join(UserTB, UserTB.id == DonationHistory.user_id)
     donates = session.exec(statement).all()
     return donates
 
