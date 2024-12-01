@@ -7,9 +7,19 @@ from app.model.user import User
 
 @app.get("/api/donate", tags=["Donations"])
 def get_all_donations(session: Session = Depends(get_session)):
-    statement = select(DonationHistory, UserTB.bloodType).join(UserTB, UserTB.id == DonationHistory.user_id)
+    statement = (select(DonationHistory.id, DonationHistory.quantity, DonationHistory.date, UserTB.bloodType, UserTB.id, UserTB.name).join(UserTB, UserTB.id == DonationHistory.user_id))
     donates = session.exec(statement).all()
-    return donates
+    return [
+        {
+            "donate_id": row[0],
+            "donate_quantity": row[1],
+            "donate_date": row[2],
+            "blood_type": row[3],
+            "user_id": row[4],
+            "name": row[5]
+        }
+        for row in donates
+    ]
 
 @app.get("/api/donate/{user_id}", tags=["Donations"])
 def get_user_donation_history(id: str, session: Session = Depends(get_session)):
